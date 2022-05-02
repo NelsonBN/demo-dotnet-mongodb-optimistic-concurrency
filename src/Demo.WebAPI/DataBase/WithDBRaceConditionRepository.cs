@@ -1,9 +1,15 @@
 ﻿using Demo.WebAPI.Exceptions;
-using Demo.WebAPI.Interfaces;
 using Demo.WebAPI.Models;
 using MongoDB.Driver;
 
 namespace Demo.WebAPI.DataBase;
+
+public interface IWithDBRaceConditionRepository
+{
+    Task AddAsync(CounterVersion entity);
+    Task<CounterVersion> GetAsync(Guid id);
+    Task UpdateAsync(CounterVersion entity);
+}
 
 public class WithDBRaceConditionRepository : IWithDBRaceConditionRepository
 {
@@ -44,7 +50,7 @@ public class WithDBRaceConditionRepository : IWithDBRaceConditionRepository
 
         if(response.ModifiedCount == 0)
         {
-            throw new DBConcurrencyException();
+            throw new DBRaceConditionException();
         }
     }
 }

@@ -1,11 +1,15 @@
-﻿using Demo.WebAPI.Interfaces;
-using Demo.WebAPI.Models;
+﻿using Demo.WebAPI.Models;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
 namespace Demo.WebAPI.DataBase;
+
+public interface IMongoDBContext : IDisposable
+{
+    IMongoCollection<T> GetCollection<T>(string collection);
+}
 
 public class MongoDBContext : IMongoDBContext
 {

@@ -1,5 +1,5 @@
-﻿using Demo.WebAPI.Exceptions;
-using Demo.WebAPI.Interfaces;
+﻿using Demo.WebAPI.DataBase;
+using Demo.WebAPI.Exceptions;
 using Demo.WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 using Polly;
@@ -12,7 +12,7 @@ namespace Demo.WebAPI.Controllers;
 public class WithPollyController : ControllerBase
 {
     private const int MAX_RETRIES = 20;
-    private readonly Random _random = new Random();
+    private readonly Random _random = new();
     private readonly AsyncRetryPolicy<IActionResult> _retryPolicy;
 
     private readonly IWithDBRaceConditionRepository _repository;
@@ -20,7 +20,7 @@ public class WithPollyController : ControllerBase
     public WithPollyController(IWithDBRaceConditionRepository repository)
     {
         _retryPolicy = Policy<IActionResult>
-            .Handle<DBConcurrencyException>()
+            .Handle<DBRaceConditionException>()
                 .WaitAndRetryAsync(
                     MAX_RETRIES,
                     times => TimeSpan.FromMilliseconds(_random.Next(1, MAX_RETRIES * 10)));

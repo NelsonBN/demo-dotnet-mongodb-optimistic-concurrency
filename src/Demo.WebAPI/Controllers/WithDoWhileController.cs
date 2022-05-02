@@ -1,5 +1,5 @@
-﻿using Demo.WebAPI.Exceptions;
-using Demo.WebAPI.Interfaces;
+﻿using Demo.WebAPI.DataBase;
+using Demo.WebAPI.Exceptions;
 using Demo.WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,7 +10,7 @@ namespace Demo.WebAPI.Controllers;
 public class WithDoWhileController : ControllerBase
 {
     private const int MAX_RETRIES = 20;
-    private readonly Random _random = new Random();
+    private readonly Random _random = new();
 
     private readonly IWithDBRaceConditionRepository _repository;
 
@@ -61,7 +61,7 @@ public class WithDoWhileController : ControllerBase
 
                 break;
             }
-            catch(DBConcurrencyException)
+            catch(DBRaceConditionException)
             {
                 attempt++;
                 Thread.Sleep(_random.Next(1, MAX_RETRIES * 10));

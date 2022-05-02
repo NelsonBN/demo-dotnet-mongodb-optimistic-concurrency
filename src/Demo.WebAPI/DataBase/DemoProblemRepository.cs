@@ -1,8 +1,14 @@
-﻿using Demo.WebAPI.Interfaces;
-using Demo.WebAPI.Models;
+﻿using Demo.WebAPI.Models;
 using MongoDB.Driver;
 
 namespace Demo.WebAPI.DataBase;
+
+public interface IDemoProblemRepository
+{
+    Task AddAsync(Counter entity);
+    Task<Counter> GetAsync(Guid id);
+    Task UpdateAsync(Counter entity);
+}
 
 public class DemoProblemRepository : IDemoProblemRepository
 {
